@@ -3,12 +3,12 @@
     <v-flex xs12 sm8 md6>
       <div class="category">
         <h1 class="text-center">View Inventory</h1>
-        <form class="text-center" @submit.prevent="categorySubmit()">
+        <form class="text-center" @submit.prevent="addCategory">
           <input
             class="category-input"
             id="category"
             type="text"
-            v-model="category"
+            name="category"
             placeholder="Add a category..."
           />
           <nuxt-link
@@ -26,21 +26,22 @@
 
 <script>
 export default {
-  data() {
-    return {
-      category: "",
-      categories: [],
-      id: 0
-    };
+  computed: {
+    categories() {
+      return this.$store.state.categories.list;
+    }
   },
   methods: {
-    categorySubmit() {
-      if (this.category !== "") {
-        this.id++;
-        this.categories.push({ id: this.id, name: this.category });
-      }
-
-      this.category = "";
+    addCategory(e) {
+      this.$store.commit({
+        type: "categories/add",
+        id: Date.now(),
+        name: e.target.elements.category.value
+      });
+      e.target.elements.category.value = "";
+    },
+    removeCategory(category) {
+      this.$store.commit("categories/remove", category);
     }
   }
 };

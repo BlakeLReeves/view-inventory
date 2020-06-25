@@ -1,4 +1,4 @@
-# view-inventory
+# View Inventory
 
 ## Build Setup
 
